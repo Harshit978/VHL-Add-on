@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+<style>
+.branding-below {
+  bottom: 56px;
+  top: 0;
+}
+</style>
+  <script>function duplicate()
+  {
+  
+  google.script.run.removeDuplicates();
+  }
+  function search()
+  {
+  google.script.run.showPrompt();
+  };
+  function Remove(){
+  google.script.run.Expiry();
+  }
+  </script>
+    <base target="_top">
+  </head>
+  <body>
+   
+    <button  onclick="search()">Find</button> 
+    <br>
+    <br>
+    <button class="create" onclick="Remove()">Remove Expired Data</button> 
+     <br>
+     <br>
+  <button class="create" onclick="duplicate()">Remove Duplicates</button> 
+    <br>
+    <br>
+    
+    <input type="button" value="Close"
+        onclick="google.script.host.close()" align="bottom"/>
+  </body>
+</html>
+
+

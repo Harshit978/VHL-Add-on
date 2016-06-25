@@ -1,0 +1,144 @@
+
+
+/**
+ * Creates a menu entry in the Google Docs UI when the document is opened.
+ *
+ * @param {object} e The event parameter for a simple onOpen trigger. To
+ *     determine which authorization mode (ScriptApp.AuthMode) the trigger is
+ *     running in, inspect e.authMode.
+ */
+ 
+function doGet() {
+  return HtmlService.createHtmlOutputFromFile('Sidebar')
+      .setSandboxMode(HtmlService.SandboxMode.IFRAME);
+}
+
+function onOpen(e) {
+  SpreadsheetApp.getUi().createAddonMenu()
+      .addItem('Start', 'showSidebar')
+      .addToUi();
+}
+
+/**
+ * Runs when the add-on is installed.
+ *
+ * @param {object} e The event parameter for a simple onInstall trigger. To
+ *     determine which authorization mode (ScriptApp.AuthMode) the trigger is
+ *     running in, inspect e.authMode. (In practice, onInstall triggers always
+ *     run in AuthMode.FULL, but onOpen triggers may be AuthMode.LIMITED or
+ *     AuthMode.NONE.)
+ */
+function onInstall(e) {
+  onOpen(e);
+}
+
+/**
+ * Opens a sidebar in the document containing the add-on's user interface.
+ */
+function showSidebar() {
+  var ui = HtmlService.createHtmlOutputFromFile('Sidebar')
+      .setTitle('Harshit Add on')
+      .setSandboxMode(HtmlService.SandboxMode.IFRAME);
+  SpreadsheetApp.getUi().showSidebar(ui);
+Logger.clear();
+}
+
+//for retreiving the id of the spreadsheet
+
+function getId() {
+var x=  SpreadsheetApp.getActiveSpreadsheet().getId();
+Logger.log(x);
+}
+
+
+//Filters the data on the basis of expired date
+
+
+
+function Expiry()
+{
+     var source = SpreadsheetApp.getActiveSpreadsheet(),
+     sheet1 = source.getSheets()[0],
+     destination = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1W3zk83Q0q_VAuc_2nX8_JlX1oDs2V0omfFraJTiTAmM/edit#gid=0");
+     Logger.log(destination);
+     var date=new Date(),
+     j=0;
+     var stackData=new Array();
+     var ss = SpreadsheetApp.getActiveSpreadsheet(),
+     sheet = ss.getActiveSheet(),
+     range = sheet.getDataRange(),
+     c=0;                                           //counter for keeping the deleted row 
+     values = range.getValues();
+     var d=0;                                       //counter for deleting the rows
+     for(r=0;r<values.length;r++)
+     {
+     var row=values[r],
+     column=row[0];
+     if((date>column))
+     {
+     d++;
+     stackData[j]=row;
+     destination.appendRow(stackData[j]);
+     sheet1.deleteRow(d-c);                                  //(d-c) is done to subtract the d counter with the counter of times the row is deleted 
+     c++
+     j++;
+     }
+     else if(r==0)
+     {d=1;
+     destination.appendRow(values[r]);
+     }
+     else
+     {
+     d++;}
+     }
+   
+     
+ };
+ 
+ //for removing dupicate data from the spreadsheet
+ 
+ 
+function removeDuplicates() {
+  var sheet = SpreadsheetApp.getActiveSheet();
+  var data = sheet.getDataRange().getValues();
+  var newData = new Array();
+  for(i in data){
+    var row = data[i];
+    var duplicate = false;
+    for(j in newData){
+      if(row.join() == newData[j].join()){
+        duplicate = true;
+      }
+    }
+    if(!duplicate){
+      newData.push(row);
+    }
+  }
+  sheet.clearContents();
+  sheet.getRange(1, 1, newData.length, newData[0].length).setValues(newData);
+}
+
+
+
+
+
+function showPrompt() 
+  {
+  var ui = SpreadsheetApp.getUi(); // Same variations.
+
+  var result = ui.prompt(
+      "Enter the word to be searched",
+      ui.ButtonSet.OK_CANCEL);
+
+  // Process the user's response.
+  var button = result.getSelectedButton();
+  var text = result.getResponseText();
+  if (button == ui.Button.OK) {
+    ui.alert('You Searched for \t' + text + '.');
+  //test(text );
+  } 
+}
+
+
+
+ 
