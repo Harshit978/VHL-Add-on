@@ -138,7 +138,35 @@ function showPrompt()
   //test(text );
   } 
 }
-
+  
+function test()
+  { 
+    var e='data';
+    //this.e =text;
+    var sh = SpreadsheetApp.getActiveSheet(),
+  data = sh.getDataRange(),
+    s=new String(),
+    c,d=data.getLastRow(),
+    j=data.getLastColumn(),
+  value=data.getValues();
+  Logger.log(value);
+  var size=value.length;
+  Logger.clear();
+ for(var n=1;n<=d;n++)
+   {  
+   for(var i=1;i<=j;i++)
+    { 
+    var row=value[n],
+    column=row[i];
+       if(column.toString().match===e)
+    {
+    Logger.log(column);
+    }
+        
+   }
+  }
+ }
+ 
 
 
  
